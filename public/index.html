@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h4>Encrypt</h4>
+    <form enctype="multipart/form-data">
+        <input type="file" name="" id="file"> <br><br>
+        Key: <input type="text" name="" id="key"> <br><br>
+        IV: <input type="text" name="" id="iv"> <br><br>
+        <button id="encrypt">Submit</button>
+    </form>
+
+    <h4>Decrypt</h4>
+    <form enctype="multipart/form-data">
+        <input type="file" name="" id="filed"> <br><br>
+        Key: <input type="text" name="" id="keyd"> <br><br>
+        IV: <input type="text" name="" id="ivd"> <br><br>
+        <button id="decrypt">Submit</button>
+    </form>
+</body>
+    <script>
+        
+        
+        document.querySelector('#encrypt').addEventListener('click', async (e) => {
+            const file = document.querySelector('#file');
+            const key = document.querySelector('#key');
+            const iv = document.querySelector('#iv');
+            e.preventDefault();
+            console.log(file.files[0]);
+            const fd = new FormData();
+            fd.append('file', file.files[0]);
+            fd.append('key', key.value);
+            fd.append('iv', iv.value);
+            fetch('/encrypt', {
+                method: 'post',
+                body: fd
+            }).then(response => window.location.href = ('/downloadEncrypted'));
+        })
+
+        document.querySelector('#decrypt').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const file = document.querySelector('#filed');
+            const key = document.querySelector('#keyd');
+            const iv = document.querySelector('#ivd');
+            // console.log(file.files[0]);
+            const fd = new FormData();
+            fd.append('file', file.files[0]);
+            fd.append('key', key.value);
+            fd.append('iv', iv.value);
+            fetch('/decrypt', {
+                method: 'post',
+                body: fd
+            }).then(response => window.location.href = ('/downloadDecrypted'));
+        })
+    </script>
+</html>
